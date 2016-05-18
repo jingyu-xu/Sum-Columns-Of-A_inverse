@@ -71,14 +71,19 @@ model = mtype_cube_subsamp; air_id = -1;
 % [s1_ss, s2_ss, s3_ss] = size(model);
 
 tumor_on = 0; tumor_depth = 10;  tumor_radius = 10; Tambient = 27; Tart = 37; 
-[A_inverse_nom_sum,A_inverse_nom_s,tum_pos_cen_nom] = gen_columns_of_A_inverse(model,s1_ss,s2_ss,s3_ss,tumor_on,tumor_depth,tumor_radius,Tambient,Tart,muscle_wall,skin_start);
+[A_inverse_nom_sum,tum_pos_cen_nom] = gen_columns_of_A_inverse(model,s1_ss,s2_ss,s3_ss,tumor_on,tumor_depth,tumor_radius,Tambient,Tart,muscle_wall,skin_start);
 
 % Generate temperature anomalies with radius = 10
 tumor_on = 1; tum_y_cen = 90; tum_z_cen = floor(s3_ss/2);
 
 tumor_radius = 10; tumor_depth = 10; tum_x_cen = 20 + tumor_depth;% tumor dept is 1cm
-[A_inverse_abn1_sum,A_inverse_s_abn,tum_pos_cen_abn] = gen_columns_of_A_inverse(model,s1_ss,s2_ss,s3_ss,tumor_on,tumor_depth,tumor_radius,Tambient,Tart,muscle_wall,skin_start,tum_x_cen,tum_y_cen,tum_z_cen);
+[A_inverse_abn1_sum,tum_pos_cen_abn] = gen_columns_of_A_inverse(model,s1_ss,s2_ss,s3_ss,tumor_on,tumor_depth,tumor_radius,Tambient,Tart,muscle_wall,skin_start,tum_x_cen,tum_y_cen,tum_z_cen);
 
+% convert the vector of sum of columns of A inverse to 3d
+A_inverse_abn1_sum_3d = convert_1d_to_3d(A_inverse_abn1_sum,s1_ss,s2_ss,s3_ss);
+
+% Plot the sum of columns of A inverse
+plot(A_inverse_abn1_sum_3d(:,:,floor(s3_ss/2)));
 
 
 
