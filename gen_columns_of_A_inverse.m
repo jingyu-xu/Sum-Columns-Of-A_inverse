@@ -1,4 +1,4 @@
-function [A_inverse_sum,A_inverse_s,tum_pos_cen] = gen_columns_of_A_inverse(model,s1_ss,s2_ss,s3_ss,tumor_on,tumor_depth,tumor_radius,Tambient,Tart,muscle_wall,skin_start,tum_x_cen,tum_y_cen,tum_z_cen)
+function [A_inverse_sum,tum_pos_cen] = gen_columns_of_A_inverse(model,s1_ss,s2_ss,s3_ss,tumor_on,tumor_depth,tumor_radius,Tambient,Tart,muscle_wall,skin_start,tum_x_cen,tum_y_cen,tum_z_cen)
 
 % tumor_radius = 5; % radius, voxel wise
 % tumor_radius_m = tumor_radius;
@@ -258,23 +258,43 @@ for z = 1:s3_ss
     end
 end
 
+% Calculate the columns index for the tumor in the A matrix
+B_index_vector = zeros((tumor_radius*2)^3,1);
+i = 1;
+tum_x_left = tum_x_cen - tumor_radius;
+tum_x_right = tum_x_cen + tumor_radius;
+tum_y_left = tum_y_cen - tumor_radius;
+tum_y_right = tum_y_cen + tumor_radius;
+tum_z_left = tum_z_cen - tumor_radius;
+tum_z_right = tum_z_cen + tumor_radius;
+for z = tum_z_left-1:tum_z_right - 1
+    for x = tum_x_left - 1:tum_x_right - 1
+        for y = tum_y_left - 1:tum_y_right - 1
+            B_index_vector(i,1) = (s1_ss*s2_ss) * z + s2_ss * x + y;
+            i = i + 1;
+        end
+    end
+end
+
+
 d = [-s1_ss*s2_ss,-s2_ss,-1,0,1,s2_ss,s1_ss*s2_ss];
 % C_use = eye(A_size,5);
-B((tum_pos_cen-2):(tum_pos_cen+2),1) = 1;
+% B((tum_pos_cen-2):(tum_pos_cen+2),1) = 1;
+b(B_index_vector) = 1;
 A = spdiags(A_diags,d,A_size,A_size);
 A_inverse_sum = cgs(A,B,1e-12,120);
 
-B_new = zeros(A_size, 5);
-k = 1;
-for i = tum_pos_cen-2:tum_pos_cen+2
-    B_new(i,k) = 1;
-    k = k + 1;
-end
-A_inverse_s = zeros(A_size, 5);
-for i = 1:5
-    A_inverse_s(:,i) = cgs(A,B_new(:,i),1e-12,120);
-end
-A_inverse_s = sum(A_inverse_s,2);
+% B_new = zeros(A_size, 5);
+% k = 1;
+% for i = tum_pos_cen-2:tum_pos_cen+2
+%     B_new(i,k) = 1;
+%     k = k + 1;
+% end
+% A_inverse_s = zeros(A_size, 5);
+% for i = 1:5
+%     A_inverse_s(:,i) = cgs(A,B_new(:,i),1e-12,120);
+% end
+% A_inverse_s = sum(A_inverse_s,2);
 
 
 
