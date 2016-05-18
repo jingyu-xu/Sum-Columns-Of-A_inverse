@@ -280,7 +280,7 @@ end
 d = [-s1_ss*s2_ss,-s2_ss,-1,0,1,s2_ss,s1_ss*s2_ss];
 % C_use = eye(A_size,5);
 % B((tum_pos_cen-2):(tum_pos_cen+2),1) = 1;
-b(B_index_vector) = 1;
+B(B_index_vector) = 1;
 A = spdiags(A_diags,d,A_size,A_size);
 A_inverse_sum = cgs(A,B,1e-12,120);
 
