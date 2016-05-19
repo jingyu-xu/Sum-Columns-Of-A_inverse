@@ -88,7 +88,7 @@ A_inverse_abn1_sum_3d = convert_1d_to_3d(A_inverse_abn1_sum,s1_ss,s2_ss,s3_ss);
 j = 1;
 for i = floor(s3_ss/2)-25:floor(s3_ss/2)+25
     figure(j)
-    plot(A_inverse_abn1_sum_3d(:,:,i));
+    plot(A_inverse_abn1_sum_3d(20:100,90,i));
     j = j + 1;
 end
 
