@@ -84,6 +84,10 @@ A_inverse_abn1_sum_3d = convert_1d_to_3d(A_inverse_abn1_sum,s1_ss,s2_ss,s3_ss);
 % [m,n] = size(A_inverse_abn1_sum);
 % Plot the sum of columns of A inverse
 
+% plot 2d surface
+A_inverse_2d = reshape(A_inverse_abn1_sum_3d(:,:,floor(s3_ss/2)),s1_ss,s2_ss);
+figure
+surf(A_inverse_2d);
 figure
 plot(A_inverse_abn1_sum_3d(20:100,90,floor(s3_ss/2)));
 j = 2;
