@@ -81,11 +81,37 @@ tumor_radius = 10; tumor_depth = 10; tum_x_cen = 20 + tumor_depth;% tumor dept i
 
 % convert the vector of sum of columns of A inverse to 3d
 A_inverse_abn1_sum_3d = convert_1d_to_3d(A_inverse_abn1_sum,s1_ss,s2_ss,s3_ss);
-
+% [m,n] = size(A_inverse_abn1_sum);
 % Plot the sum of columns of A inverse
-plot(A_inverse_abn1_sum_3d(:,:,floor(s3_ss/2)));
 
 
+j = 1;
+for i = floor(s3_ss/2)-25:floor(s3_ss/2)+25
+    figure(j)
+    plot(A_inverse_abn1_sum_3d(:,:,i));
+    j = j + 1;
+end
+
+
+% Plot cube
+% cm = colormap; % return the current color map
+% colorID = zeros(m,1);
+% myColor = zeros(m,3);
+% for i = 1:m
+%     colorID(i,1) = max(1,sum( A_inverse_abn1_sum(i,1)> (0:1/length(cm(:,1)):1)));
+%     myColor(i,:) = cm(colorID(i,1),:);
+% end
+% myColor_3d = convert_1d_to_3d(myColor,s1_ss,s2_ss,s3_ss);
+% Plot cube use plotcube,but can not assign color to the voxel
+figure
+for x = 1:10
+    for y = 1:10
+        for z = 1:10
+            CubeLength = 1;
+            plotcube([CubeLength CubeLength CubeLength],[x,y,z],0.9,[0 0 1]);
+        end
+    end
+end
 
 
 
